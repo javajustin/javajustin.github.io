@@ -19,7 +19,7 @@
 
 
 <style>
-    #chart { height: 500px; width: 800px; }
+    #chart { height: 80%; width: 100%; }
     h1 {font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         text-align: center;
     }
@@ -69,7 +69,7 @@ var definition = {
                     $(this).text($.format.date(new Date(Number(unformatedDate)), "MM/dd/yyyy"));
                 });
 
-                $("#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:nth-child(12) > tspan").text("Date");
+                $("#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:last-child > tspan").text("Date");
 
                 // $("#chart > div > div > svg > g:nth-child(8) > g > g > g").each(function() {
                 //     strArray = this.ariaLabel.split(' ');
