@@ -19,7 +19,11 @@
 
 
 <style>
-    #chart { height: 80%; width: 100%; }
+    #chart1 { margin:auto; height: 500px; width: 80%; }
+    #chart2 { margin:auto; height: 300px; width: 40%; }
+    #chart3 { margin:auto; height: 300px; width: 40%; }
+    #chart4 { margin:auto; height: 300px; width: 40%; }
+
     h1 {font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         text-align: center;
     }
@@ -47,55 +51,163 @@ var definition = {
     ]
   };
   
-  var cedarChart = new cedar.Chart("chart", definition);
-  
-  //cedarChart.dateFormatter = new AmCharts.DateFormat("yyyy-MM-dd");
-  //#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:nth-child(10) > tspan
-  //document.querySelector("#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:nth-child(10) > tspan")
-  // /html/body/div/div/div/svg/g[14]/g[1]/text[10]/tspan
-  // //*[@id="chart"]/div/div/svg/g[14]/g[1]/text[10]/tspan
-  ///html/body/div/div/div/svg/g[14]/g[1]/text[1]/tspan
-  
-  ///html/body/div/div/div/svg/g[14]/g[2]/text[5]/tspan
-
+  var cedarChart = new cedar.Chart("chart1", definition);
   cedarChart.show();
-
   var existCondition = setInterval(function() {
-        if ($('#chart > div > div > svg').length) {
+        if ($('#chart1 > div > div > svg').length) {
             clearInterval(existCondition);
 
-            $("#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text > tspan").each(function() {
+            $("#chart1 > div > div > svg > g:nth-child(15) > g:nth-child(1) > text > tspan").each(function() {
                     unformatedDate = $(this).text();                            
                     $(this).text($.format.date(new Date(Number(unformatedDate)), "MM/dd/yyyy"));
                 });
 
-                $("#chart > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:last-child > tspan").text("Date");
-
-                // $("#chart > div > div > svg > g:nth-child(8) > g > g > g").each(function() {
-                //     strArray = this.ariaLabel.split(' ');
-                //     formatedDate = $.format.date(new Date(Number(strArray[2])), "MM/dd/yyyy");
-                //     //console.log(strArray[0]+' '+strArray[1]+' '+ formatedDate + ' '+ strArray[3] );
-                //     this.ariaLabel = [0]+' '+strArray[1]+' '+ formatedDate + ' '+ strArray[3] ;
-                // })
-
-                // $("#amcharts-balloon-div > div > div[0]").each(function() {
-
-                // }
-
-                //document.querySelector("#chart > div > div > div > div > div:nth-child(1)")
-
-                //amcharts-balloon-div
-
-                // $("#chart > div > div > svg > g:nth-child(8) > g > g > g:nth-child(1)[aria-label]").attr("poop");
+                $("#chart1 > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:last-child > tspan").text("Date");
         }
     }, 50); // check every 50ms
+
+  
+  var definition2 = {
+    "type": "bar",
+    "datasets": [
+      {
+        "url": "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data_NEW/FeatureServer/0",
+        "name": "COVIDLineData",
+        "query": {
+          "where": "County='Okaloosa'",
+          "orderByFields": "Age_group",
+          "groupByFieldsForStatistics": "Age_group",
+          "outStatistics": [
+          {
+            "statisticType": "count",
+            "onStatisticField": "Age_group",
+            "outStatisticFieldName": "Age_group_COUNT"
+          }
+        ]
+        }
+      }
+    ],
+    "series": [
+      {
+        "category": {"field": "Age_group", "label": "Age group"},
+        "value": {"field": "Age_group_COUNT", "label": "# Cases"},
+        "source": "COVIDLineData"
+      }
+    ]
+  };
+  var cedarChart2 = new cedar.Chart("chart2", definition2);  
+  cedarChart2.show();
+
+
+  // var definition3 = {
+  //   "type": "bar",
+  //   "datasets": [
+  //     {
+  //       "url": "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data_NEW/FeatureServer/0",
+  //       "name": "COVIDLineData",
+  //       "query": {
+  //         "where": "County='Okaloosa'",
+  //         "orderByFields": "EventDate DESC",          
+  //         "groupByFieldsForStatistics": "EventDate",          
+  //         "outStatistics": [
+  //           {
+  //             "statisticType": "count",
+  //             "onStatisticField": "1=1",  //all records
+  //             "outStatisticFieldName": "Case_COUNT"
+  //           }
+  //         ] 
+  //       }
+  //     }
+  //   ],
+  //   "series": [
+  //     {
+  //       "category": {"field": "EventDate", "label": "Date"},
+  //       "value": {"field": "Case_COUNT", "label": "# Cases"},
+  //       "source": "COVIDLineData"
+  //     }
+  //   ]
+  // };
+
+  var definition3 = {
+    "type": "bar",
+    "datasets": [
+      {
+        "url": "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data_NEW/FeatureServer/0",
+        "name": "COVIDLineData",
+        "query": {
+          "where": "County='Okaloosa' AND UPPER(Died)='YES'",
+          "orderByFields": "Age_group",
+          "groupByFieldsForStatistics": "Age_group",
+          "outStatistics": [
+          {
+            "statisticType": "count",
+            "onStatisticField": "Age_group",
+            "outStatisticFieldName": "Age_group_COUNT"
+          }
+        ]
+        }
+      }
+    ],
+    "series": [
+      {
+        "category": {"field": "Age_group", "label": "Age group"},
+        "value": {"field": "Age_group_COUNT", "label": "# Cases"},
+        "source": "COVIDLineData"
+      }
+    ]
+  };
+  var cedarChart3 = new cedar.Chart("chart3", definition3);  
+  cedarChart3.show();
+
+  var definition3 = {
+    "type": "bar",
+    "datasets": [
+      {
+        "url": "https://services1.arcgis.com/CY1LXxl9zlJeBuRZ/arcgis/rest/services/Florida_COVID19_Case_Line_Data_NEW/FeatureServer/0",
+        "name": "COVIDLineData",
+        "query": {
+          "where": "County='Okaloosa' AND UPPER(Hospitalized)='YES'",
+          "orderByFields": "Age_group",
+          "groupByFieldsForStatistics": "Age_group",
+          "outStatistics": [
+          {
+            "statisticType": "count",
+            "onStatisticField": "Age_group",
+            "outStatisticFieldName": "Age_group_COUNT"
+          }
+        ]
+        }
+      }
+    ],
+    "series": [
+      {
+        "category": {"field": "Age_group", "label": "Age group"},
+        "value": {"field": "Age_group_COUNT", "label": "# Cases"},
+        "source": "COVIDLineData"
+      }
+    ]
+  };
+  var cedarChart4 = new cedar.Chart("chart4", definition3);  
+  cedarChart4.show();  
+
+
 
   
   </script>
 </head>
 <body>
-  <H1>Okaloosa County new COVID cases per day</H1>
+<H1>Okaloosa County New COVID Cases per Day</H1>
+<div id="chart1"></div> 
+<br><hr>
+<H1>Okaloosa County COVID Cases per Age Group</H1>
+<div id="chart2"></div> 
+<br><hr>
+<H1>Okaloosa County COVID Hospitalizations per Age Group</H1>
+<div id="chart4"></div> 
+<br><hr>
+<H1>Okaloosa County COVID Deaths per Age Group</H1>
+<div id="chart3"></div> 
 
-<div id="chart"></div> 
+
 </body>
 </html>
