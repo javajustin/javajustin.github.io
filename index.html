@@ -60,9 +60,20 @@ var definition = {
             $("#chart1 > div > div > svg > g:nth-child(15) > g:nth-child(1) > text > tspan").each(function() {
                     unformatedDate = $(this).text();                            
                     $(this).text($.format.date(new Date(Number(unformatedDate)), "MM/dd/yyyy"));
-                });
+              });
 
-                $("#chart1 > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:last-child > tspan").text("Date");
+            $("#chart1 > div > div > svg > g:nth-child(15) > g:nth-child(1) > text:last-child > tspan").text("Date");
+
+            // try to change popup date the mouse move
+            $('#chart1 > div > div > svg').mousemove(function( event ) {              
+              oldDateStr = $("#chart1 > div > div > div > div > div:nth-child(1)").text();
+              if (oldDateStr.indexOf('/') < 0) { // it hasn't been fixed yet
+                strArray = oldDateStr.split(' ');
+                console.log(strArray[1]);
+                newDateStr = $.format.date(new Date(Number(strArray[1])), "MM/dd/yyyy");              
+                $("#chart1 > div > div > div > div > div:nth-child(1)").text(newDateStr);
+              }
+            });
         }
     }, 50); // check every 50ms
 
